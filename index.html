@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Регистрационная форма</title>
+    <style>
+        body {
+            font: 16px Tahoma;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form_holder1 {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: max-content;
+        }
+
+        table {
+            border-collapse: separate;
+        }
+
+        thead {
+            background-color: #334466;
+            color: white;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+
+
+
+        input[type=text],
+        input[type=password],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type=button],
+        input[type=reset] {
+            width: auto;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type=button]:hover,
+        input[type=reset]:hover {
+            background-color: #45a049;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+        }
+    </style>
+</head>
+
+<body onload="docLoad()">
+    <div id="divForm">
+        <form name="frm1">
+            <table class="form_holder1" cellspacing="1">
+                <thead>
+                    <tr>
+                        <td colspan="2" align="center">Регистрация на сервере:</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Логин:</td>
+                        <td><input size="26" type="text" name="login" /></td>
+                    </tr>
+                    <tr>
+                        <td>Пароль:</td>
+                        <td><input size="26" type="password" name="text_password1" /></td>
+                    </tr>
+                    <tr>
+                        <td>Подтверждение:</td>
+                        <td><input size="26" type="password" name="text_password2" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <hr />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Полное имя (ФИО):</td>
+                        <td><input size="26" type="text" name="fullname" /></td>
+                    </tr>
+                    <tr valign="top">
+                        <td>Пол:</td>
+                        <td>
+                            <input type="radio" name="radio_gender" value="male" />мужской<br />
+                            <input type="radio" name="radio_gender" value="female" />женский
+                        </td>
+                    </tr>
+                    <tr valign="top">
+                        <td>
+                            Иностранные<br />
+                            языки:
+                        </td>
+                        <td>
+                            <input type="checkbox" name="check_languages_1" />Английский<br />
+                            <input type="checkbox" name="check_languages_2" />Немецкий<br />
+                            <input type="checkbox" name="check_languages_3" />Французский<br />
+                            <input type="checkbox" name="check_languages_4" />Испанский<br />
+                            <input type="checkbox" name="check_languages_5" />Итальянский<br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Сфера деятельности:</td>
+                        <td>
+                            <select name="list_work">
+                                <option value="0">обслуживание</option>
+                                <option value="1" selected>образование</option>
+                                <option value="2">медицина</option>
+                                <option value="3">наука</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>e-mail:</td>
+                        <td><input size="26" type="text" name="e_mail" /></td>
+                    </tr>
+                    <tr valign="top">
+                        <td>
+                            Дополнительная<br />
+                            информация:
+                        </td>
+                        <td>
+                            <textarea name="text_info" cols="20" rows="5"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <input type="button" value="Готово" onclick="saveFormData()" />
+                            <input type="reset" value="Сброс" />
+                            <input type="button" value="Удалить данные" onclick="deleteCookies()" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <script>
+        function saveFormData() {
+            if (frm1.login.value.length == 0 || frm1.fullname.value.length == 0 || frm1.e_mail.value.length == 0) {
+                alert("Не все обязательные поля заполнены!");
+                return false;
+            }
+
+            if (frm1.text_password1.value !== frm1.text_password2.value) {
+                alert("Пароли не совпадают!");
+                return false;
+            }
+
+            const password = frm1.text_password1.value;
+            const hasNumber = /\d/.test(password);
+            const hasUpperCase = /[A-Z]/.test(password);
+
+            if (password.length < 8) {
+                alert("Пароль должен быть не менее 8 символов!");
+                return false;
+            }
+            if (!hasNumber) {
+                alert("Пароль должен содержать хотя бы одну цифру!");
+                return false;
+            }
+            if (!hasUpperCase) {
+                alert("Пароль должен содержать хотя бы одну заглавную букву!");
+                return false;
+            }
+
+            if (frm1.login.value.length == 0 || frm1.fullname.value.length == 0 || frm1.e_mail.value.length == 0) {
+                alert("Не все обязательные поля заполнены!");
+                return;
+            }
+            let genderRadio = document.querySelector('input[name="radio_gender"]:checked');
+            if (!genderRadio) {
+                alert("Пожалуйста, выберите пол.");
+                return;
+            }
+            let genderValue = genderRadio.value;
+            let listWorkValue = frm1.list_work.value;
+
+
+            let d = new Date();
+            d.setMonth(d.getMonth() + 6);
+
+            document.cookie = "login=" + encodeURIComponent(frm1.login.value) + ";path=/;expires=" + d.toUTCString() + ";";
+            document.cookie = "text_password1=" + encodeURIComponent(frm1.text_password1.value) + ";path=/;expires=" + d.toUTCString() + ";";
+            document.cookie = "text_password2=" + encodeURIComponent(frm1.text_password2.value) + ";path=/;expires=" + d.toUTCString() + ";";
+            document.cookie = "fullname=" + encodeURIComponent(frm1.fullname.value) + ";path=/;expires=" + d.toUTCString() + ";";
+            document.cookie = "e_mail=" + encodeURIComponent(frm1.e_mail.value) + ";path=/;expires=" + d.toUTCString() + ";";
+            document.cookie = "radio_gender=" + encodeURIComponent(genderValue) + ";path=/;expires=" + d.toUTCString() + ";";
+            document.cookie = "text_info=" + encodeURIComponent(frm1.text_info.value) + ";path=/;expires=" + d.toUTCString() + ";";
+            document.cookie = "list_work=" + encodeURIComponent(listWorkValue) + ";path=/;expires=" + d.toUTCString() + ";";
+
+            let languages = [];
+            for (let i = 1; i <= 5; i++) {
+                let checkbox = document.forms["frm1"]["check_languages_" + i];
+                if (checkbox.checked) {
+                    languages.push(checkbox.name);
+                }
+            }
+            document.cookie = "languages=" + encodeURIComponent(languages.join(',')) + ";path=/;expires=" + d.toUTCString() + ";";
+
+            alert("Данные сохранены!");
+        }
+        
+
+        function docLoad() {
+            let cookies = document.cookie.split(';').reduce((acc, cookieStr) => {
+        let [key, value] = cookieStr.trim().split('=');
+        if (value && value.trim() !== "") { 
+            acc[key.trim()] = decodeURIComponent(value);
+        }
+        return acc;
+    }, {});
+
+    if (Object.keys(cookies).length > 0) {
+        let restoreData = confirm("Хотите восстановить сохранённые данные?");
+
+                if (restoreData) {
+                    if (cookies.login) frm1.login.value = cookies.login;
+                    if (cookies.text_password1) frm1.text_password1.value = cookies.text_password1;
+                    if (cookies.text_password2) frm1.text_password2.value = cookies.text_password2;
+                    if (cookies.fullname) frm1.fullname.value = cookies.fullname;
+                    if (cookies.e_mail) frm1.e_mail.value = cookies.e_mail;
+                    if (cookies.text_info) frm1.text_info.value = cookies.text_info;
+                    if (cookies.list_work) frm1.list_work.value = cookies.list_work;
+
+                    if (cookies.radio_gender) {
+                        const radio_genderRadio = document.querySelector(`input[name="radio_gender"][value="${cookies.radio_gender}"]`);
+                        if (radio_genderRadio) radio_genderRadio.checked = true;
+                    }
+
+                    if (cookies.languages) {
+                        let selectedLanguages = cookies.languages.split(',');
+                        for (let i = 1; i <= 5; i++) {
+                            let checkbox = document.forms["frm1"]["check_languages_" + i];
+                            if (selectedLanguages.includes(checkbox.name)) {
+                                checkbox.checked = true;
+                            } else {
+                                checkbox.checked = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function deleteCookies() {
+            const cookies = document.cookie.split(";");
+
+            for (let cookie of cookies) {
+                const eqPos = cookie.indexOf("=");
+                const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+            }
+
+            alert("Данные удалены.");
+            location.reload();
+        }
+
+    </script>
+
+
+</body>
+
+</html>
